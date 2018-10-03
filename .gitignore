@@ -8,7 +8,7 @@
 *.org
 
 #maven ignore
-targer/
+target/
 
 #eclipse ignore
 .settings/
