@@ -1,5 +1,6 @@
 package com.mmall.controller.backend;
 
+import com.mmall.common.CheckUser;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -9,6 +10,7 @@ import com.mmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -27,8 +29,8 @@ public class CategoryManageController {
     private ICategoryService iCategoryService;
 
     @PostMapping(value="add_category.do")
-    public ServerResponse addCategory(HttpSession session, String categoryName, @RequestParam(value="parentId", defaultValue="0") int parentId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse addCategory(HttpServletRequest request, String categoryName, @RequestParam(value="parentId", defaultValue="0") int parentId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -43,8 +45,8 @@ public class CategoryManageController {
     }
 
     @PostMapping(value="set_category_name.do")
-    public ServerResponse setCategoryName(HttpSession session, Integer categoryId, String categoryName) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse setCategoryName(HttpServletRequest request, Integer categoryId, String categoryName) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -58,8 +60,8 @@ public class CategoryManageController {
     }
 
     @GetMapping(value="get_category.do")
-    public ServerResponse getChildrenParallelCategory(HttpSession session, @RequestParam(value="categoryId",defaultValue = "0") Integer categoryId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getChildrenParallelCategory(HttpServletRequest request, @RequestParam(value="categoryId",defaultValue = "0") Integer categoryId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -73,8 +75,8 @@ public class CategoryManageController {
     }
 
     @GetMapping(value="get_deep_category.do")
-    public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session, @RequestParam(value="categoryId",defaultValue = "0") Integer categoryId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getCategoryAndDeepChildrenCategory(HttpServletRequest request, @RequestParam(value="categoryId",defaultValue = "0") Integer categoryId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }

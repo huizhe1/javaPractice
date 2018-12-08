@@ -1,6 +1,7 @@
 package com.mmall.controller.portal;
 
 import com.github.pagehelper.PageInfo;
+import com.mmall.common.CheckUser;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -28,8 +30,8 @@ public class ShippingController {
     private IShippingService iShippingService;
 
     @PostMapping(value="add.do")
-    public ServerResponse add(HttpSession session, Shipping shipping) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse add(HttpServletRequest request, Shipping shipping) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -37,8 +39,8 @@ public class ShippingController {
     }
 
     @PostMapping(value="del.do")
-    public ServerResponse del(HttpSession session, Integer shippingId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse del(HttpServletRequest request, Integer shippingId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -46,8 +48,8 @@ public class ShippingController {
     }
 
     @PostMapping(value="update.do")
-    public ServerResponse update(HttpSession session, Shipping shipping) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse update(HttpServletRequest request, Shipping shipping) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -55,8 +57,8 @@ public class ShippingController {
     }
 
     @PostMapping(value="select.do")
-    public ServerResponse<Shipping> select(HttpSession session, Integer shippingId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Shipping> select(HttpServletRequest request, Integer shippingId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -64,8 +66,8 @@ public class ShippingController {
     }
 
     @PostMapping(value="list.do")
-    public ServerResponse<PageInfo> list(HttpSession session, @RequestParam(value="pageNum", defaultValue ="1")int pageNum, @RequestParam(value="pageSize", defaultValue ="10")int pageSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<PageInfo> list(HttpServletRequest request, @RequestParam(value="pageNum", defaultValue ="1")int pageNum, @RequestParam(value="pageSize", defaultValue ="10")int pageSize) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }

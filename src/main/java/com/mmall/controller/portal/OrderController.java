@@ -1,5 +1,6 @@
 package com.mmall.controller.portal;
 
+import com.mmall.common.CheckUser;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -28,8 +30,8 @@ public class OrderController {
     private IOrderService iOrderService;
 
     @PostMapping("create.do")
-    public ServerResponse create(HttpSession session, Integer shippingId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse create(HttpServletRequest request, Integer shippingId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -37,8 +39,8 @@ public class OrderController {
     }
 
     @PostMapping("cancel.do")
-    public ServerResponse cancel(HttpSession session, Long orderNo) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse cancel(HttpServletRequest request, Long orderNo) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -46,8 +48,8 @@ public class OrderController {
     }
 
     @PostMapping("get_order_cart_product.do")
-    public ServerResponse getOrderCartProduct(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getOrderCartProduct(HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -55,8 +57,8 @@ public class OrderController {
     }
 
     @PostMapping("detail.do")
-    public ServerResponse detail(HttpSession session, Long orderNo) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse detail(HttpServletRequest request, Long orderNo) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -64,8 +66,8 @@ public class OrderController {
     }
 
     @PostMapping("list.do")
-    public ServerResponse list(HttpSession session, @RequestParam(value="pageNum ",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue = "10") int pageSize) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse list(HttpServletRequest request, @RequestParam(value="pageNum ",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue = "10") int pageSize) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }

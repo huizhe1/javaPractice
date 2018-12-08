@@ -1,6 +1,7 @@
 package com.mmall.controller.backend;
 
 import com.google.common.collect.Maps;
+import com.mmall.common.CheckUser;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -37,8 +38,8 @@ public class ProductManageController {
     private IFileService iFileService;
 
     @PostMapping(value="save.do")
-    public ServerResponse productSave(HttpSession session, Product product) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse productSave(HttpServletRequest request, Product product) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -51,8 +52,8 @@ public class ProductManageController {
     }
 
     @PostMapping(value="set_sale_status.do")
-    public ServerResponse setSaleStatus(HttpSession session, Integer productId, Integer status) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse setSaleStatus(HttpServletRequest request, Integer productId, Integer status) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -65,8 +66,8 @@ public class ProductManageController {
     }
 
     @PostMapping(value="detail.do")
-    public ServerResponse getDatail(HttpSession session, Integer productId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getDatail(HttpServletRequest request, Integer productId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -79,8 +80,8 @@ public class ProductManageController {
     }
 
     @GetMapping(value="list.do")
-    public ServerResponse getList(HttpSession session, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getList(HttpServletRequest request, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -93,8 +94,8 @@ public class ProductManageController {
     }
 
     @PostMapping(value="search.do")
-    public ServerResponse getList(HttpSession session, String productName, Integer productId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse getList(HttpServletRequest request, String productName, Integer productId, @RequestParam(value="pageNum",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue="10") int pageSize) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -107,8 +108,8 @@ public class ProductManageController {
     }
 
     @RequestMapping(value="upload.do")
-    public ServerResponse upload(HttpSession session, @RequestParam(value="upload_file", required=false) MultipartFile file, HttpServletRequest request) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse upload(@RequestParam(value="upload_file", required=false) MultipartFile file, HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录管理员");
         }
@@ -127,9 +128,9 @@ public class ProductManageController {
     }
 
     @PostMapping(value="richtext_img_upload.do")
-    public Map richtextImgUpload(HttpSession session, @RequestParam(value="upload_file", required=false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public Map richtextImgUpload(@RequestParam(value="upload_file", required=false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
         Map resultMap = Maps.newHashMap();
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = CheckUser.getUser(request);
         if (null == user) {
             resultMap.put("success", false);
             resultMap.put("msg", "请登录管理员");

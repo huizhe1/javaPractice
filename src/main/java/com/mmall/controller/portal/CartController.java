@@ -1,5 +1,6 @@
 package com.mmall.controller.portal;
 
+import com.mmall.common.CheckUser;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -26,8 +28,9 @@ public class CartController {
     private ICartService iCartService;
 
     @GetMapping(value="list.do")
-    public ServerResponse add(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse add(HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
+
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -35,8 +38,8 @@ public class CartController {
     }
 
     @PostMapping(value="add.do")
-    public ServerResponse add(HttpSession session, Integer count, Integer productId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse add(HttpServletRequest request, Integer count, Integer productId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -44,8 +47,8 @@ public class CartController {
     }
 
     @PostMapping(value="update.do")
-    public ServerResponse update(HttpSession session, Integer count, Integer productId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse update(HttpServletRequest request, Integer count, Integer productId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -53,8 +56,8 @@ public class CartController {
     }
 
     @PostMapping(value="delete_product.do")
-    public ServerResponse deleteProduct(HttpSession session, String productIds) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse deleteProduct(HttpServletRequest request, String productIds) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -62,8 +65,8 @@ public class CartController {
     }
 
     @GetMapping(value="select_all.do")
-    public ServerResponse selectAll(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse selectAll(HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -71,8 +74,8 @@ public class CartController {
     }
 
     @GetMapping(value="un_select_all.do")
-    public ServerResponse unSelectAll(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse unSelectAll(HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -80,8 +83,8 @@ public class CartController {
     }
 
     @PostMapping(value="select.do")
-    public ServerResponse select(HttpSession session, Integer productId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse select(HttpServletRequest request, Integer productId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -89,8 +92,8 @@ public class CartController {
     }
 
     @PostMapping(value="un_select.do")
-    public ServerResponse unSelect(HttpSession session, Integer productId) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse unSelect(HttpServletRequest request, Integer productId) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -98,8 +101,8 @@ public class CartController {
     }
 
     @GetMapping(value="get_cart_product_count.do")
-    public ServerResponse<Integer> getCartProductCount(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<Integer> getCartProductCount(HttpServletRequest request) {
+        User user = CheckUser.getUser(request);
         if (null == user) {
             return ServerResponse.createBySuccess(0);
         }

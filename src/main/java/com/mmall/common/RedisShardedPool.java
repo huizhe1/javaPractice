@@ -1,25 +1,30 @@
 package com.mmall.common;
 
 import com.mmall.util.PropertiesUtil;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.ShardedJedis;
+import redis.clients.jedis.*;
+import redis.clients.util.Hashing;
+import redis.clients.util.Sharded;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author huizhe
- * @date 2018/12/7
- * @time 10:00
+ * @date 2018/12/8
+ * @time 22:59
  */
-public class RedisPool {
+public class RedisShardedPool {
 
-    private static String redisIp = PropertiesUtil.getProperty("redis.ip", "127.0.0.1");
-    private static Integer redisPort = Integer.parseInt(PropertiesUtil.getProperty("redis.port","6379"));
+    private static String redis1Ip = PropertiesUtil.getProperty("redis1.ip", "127.0.0.1");
+    private static Integer redis1Port = Integer.parseInt(PropertiesUtil.getProperty("redis1.port","6379"));
+
+    private static String redis2Ip = PropertiesUtil.getProperty("redis2.ip", "127.0.0.1");
+    private static Integer redis2Port = Integer.parseInt(PropertiesUtil.getProperty("redis2.port","6380"));
 
     /**
      * jedis 连接池
      */
-    private static JedisPool pool;
+    private static ShardedJedisPool pool;
 
     /**
      * 最大连接数
@@ -58,30 +63,26 @@ public class RedisPool {
         //连接耗尽的时候，是否阻塞，false会抛出异常，true阻塞直到超时，默认为true
         config.setBlockWhenExhausted(true);
 
-        pool = new JedisPool(config, redisIp, redisPort, 1000*2);
+        JedisShardInfo info1 = new JedisShardInfo(redis1Ip, redis1Port, 2000);
+        JedisShardInfo info2 = new JedisShardInfo(redis2Ip, redis2Port, 2000);
+        List<JedisShardInfo> jedisShardInfoList = new ArrayList<>(2);
+        jedisShardInfoList.add(info1);
+        jedisShardInfoList.add(info2);
+        // MURMUR_HASH 一致性算法
+        pool = new ShardedJedisPool(config, jedisShardInfoList, Hashing.MURMUR_HASH, Sharded.DEFAULT_KEY_TAG_PATTERN);
     }
 
     static {
         initPool();
     }
 
-    public static Jedis getJedis() {
+    public static ShardedJedis getJedis() {
         return pool.getResource();
     }
 
-    public static void returnResource(Jedis jedis) {
+    public static void returnResource(ShardedJedis jedis) {
         if(jedis != null) {
             jedis.close();
         }
     }
-
-    //public static void main(String[] args) {
-    //    Jedis jedis = pool.getResource();
-    //    jedis.set("gelykey", "geekyvalue");
-    //    returnResource(jedis);
-    //
-    //    // 临时调用，销毁连接池中所有的连接
-    //    pool.destroy();
-    //    System.out.println("program is end");
-    //}
 }
