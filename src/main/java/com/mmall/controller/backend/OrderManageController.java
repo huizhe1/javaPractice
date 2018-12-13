@@ -34,57 +34,57 @@ public class OrderManageController {
 
     @PostMapping("list.do")
     public ServerResponse<PageInfo> orderList(HttpServletRequest request, @RequestParam(value="pageNum ",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue = "10") int pageSize) {
-        User user = CheckUser.getUser(request);
-        if (null == user) {
-            return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
-        }
-        // 校验一下是否是管理员
-        if (iUserService.checkAdminRole(user).isSuccess()) {
+        //User user = CheckUser.getUser(request);
+        //if (null == user) {
+        //    return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+        //}
+        //// 校验一下是否是管理员
+        //if (iUserService.checkAdminRole(user).isSuccess()) {
             return iOrderService.manageList(pageNum, pageSize);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
-        }
+        //} else {
+        //    return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+        //}
     }
 
     @PostMapping("detail.do")
     public ServerResponse<OrderVo> orderDetail(HttpServletRequest request, Long orderNo) {
-        User user = CheckUser.getUser(request);
-        if (null == user) {
-            return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
-        }
-        // 校验一下是否是管理员
-        if (iUserService.checkAdminRole(user).isSuccess()) {
+        //User user = CheckUser.getUser(request);
+        //if (null == user) {
+        //    return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+        //}
+        //// 校验一下是否是管理员
+        //if (iUserService.checkAdminRole(user).isSuccess()) {
             return iOrderService.manageDetail(orderNo);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
-        }
+        //} else {
+        //    return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+        //}
     }
 
     @PostMapping("search.do")
     public ServerResponse<PageInfo> orderSearch(HttpServletRequest request, Long orderNo, @RequestParam(value="pageNum ",defaultValue="1") int pageNum, @RequestParam(value="pageSize",defaultValue = "10") int pageSize) {
-        User user = CheckUser.getUser(request);
-        if (null == user) {
-            return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
-        }
-        // 校验一下是否是管理员
-        if (iUserService.checkAdminRole(user).isSuccess()) {
+        //User user = CheckUser.getUser(request);
+        //if (null == user) {
+        //    return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+        //}
+        //// 校验一下是否是管理员
+        //if (iUserService.checkAdminRole(user).isSuccess()) {
             return iOrderService.manageSearch(orderNo, pageNum, pageSize);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
-        }
+        //} else {
+        //    return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+        //}
     }
 
     @PostMapping("send_goods.do")
     public ServerResponse<String> orderSendGoods(HttpServletRequest request, Long orderNo) {
-        User user = CheckUser.getUser(request);
-        if (null == user) {
-            return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
-        }
-        // 校验一下是否是管理员
-        if (iUserService.checkAdminRole(user).isSuccess()) {
+        //User user = CheckUser.getUser(request);
+        //if (null == user) {
+        //    return ServerResponse.createeByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+        //}
+        //// 校验一下是否是管理员
+        //if (iUserService.checkAdminRole(user).isSuccess()) {
             return iOrderService.manageSendGoods(orderNo);
-        } else {
-            return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
-        }
+        //} else {
+        //    return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+        //}
     }
 }
